@@ -1,39 +1,122 @@
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){ dataLayer.push(arguments); }
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>It works!</title>
 
-  gtag('js', new Date());
-  gtag('config', 'G-Z7YHHWQRXB', {
-    anonymize_ip: true,
-    send_page_view: false
-  });
+    <!-- Google tag (gtag.js) with PII redaction -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-Z7YHHWQRXB"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){ dataLayer.push(arguments); }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    const fieldsToRedact = [
-      'fullName', 'dob', 'address', 'phone', 'email',
-      'medicare', 'tax', 'passport', 'driver',
-      'bank', 'health', 'emergency'
-    ];
+      gtag('js', new Date());
+      gtag('config', 'G-Z7YHHWQRXB', {
+        anonymize_ip: true,
+        send_page_view: false
+      });
 
-    const originalData = {};
-    const redactedData = {};
+      window.addEventListener('DOMContentLoaded', () => {
+        const fieldsToRedact = [
+          'fullName', 'dob', 'address', 'phone', 'email',
+          'medicare', 'tax', 'passport', 'driver',
+          'bank', 'health', 'emergency'
+        ];
 
-    fieldsToRedact.forEach(fieldId => {
-      const field = document.getElementById(fieldId);
-      if (field) {
-        originalData[fieldId] = field.value;
-        redactedData[fieldId] = '[REDACTED]';
+        const originalData = {};
+        const redactedData = {};
+
+        fieldsToRedact.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          if (field) {
+            const val = field.value || '[EMPTY]';
+            originalData[fieldId] = val;
+            redactedData[fieldId] = '[REDACTED]';
+          } else {
+            originalData[fieldId] = '[FIELD NOT FOUND]';
+            redactedData[fieldId] = '[REDACTED]';
+          }
+        });
+
+        // Log to console
+        console.log('📦 Would have sent to Google Analytics (BEFORE redaction):');
+        console.table(originalData);
+
+        console.log('🛡️ Sending to Google Analytics (AFTER redaction):');
+        console.table(redactedData);
+
+        // Send safe data to GA
+        gtag('event', 'dummy_form_loaded', redactedData);
+      });
+    </script>
+
+    <style>
+      label {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
       }
-    });
+      input {
+        width: 300px;
+        padding: 5px;
+        margin-bottom: 10px;
+      }
+      .form-section {
+        margin-top: 30px;
+      }
+      .next-button {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Hello from GitHub Pages!</h1>
+    <p>This page is rendering properly 🚀</p>
 
-    // Log original vs redacted
-    console.log('📦 Would have sent to Google Analytics (BEFORE redaction):');
-    console.table(originalData);
+    <div class="form-section">
+      <h2>Dummy Personal and Sensitive Information</h2>
+      <form>
+        <label for="fullName">Full Name</label>
+        <input type="text" id="fullName" value="Johnathan Doe">
 
-    console.log('🛡️ Sending to Google Analytics (AFTER redaction):');
-    console.table(redactedData);
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" value="1985-06-15">
 
-    // Send the redacted data to GA
-    gtag('event', 'dummy_form_loaded', redactedData);
-  });
-</script>
+        <label for="address">Home Address</label>
+        <input type="text" id="address" value="123 Privacy Lane, Securetown, NSW 2000">
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" value="0412 345 678">
+
+        <label for="email">Email Address</label>
+        <input type="email" id="email" value="john.doe@example.com">
+
+        <label for="medicare">Medicare Number</label>
+        <input type="text" id="medicare" value="1234 56789 0">
+
+        <label for="tax">Tax File Number</label>
+        <input type="text" id="tax" value="123 456 789">
+
+        <label for="passport">Passport Number</label>
+        <input type="text" id="passport" value="N1234567">
+
+        <label for="driver">Driver Licence</label>
+        <input type="text" id="driver" value="NSW1234567">
+
+        <label for="bank">Bank Account Number</label>
+        <input type="text" id="bank" value="12345678">
+
+        <label for="health">Private Health Fund</label>
+        <input type="text" id="health" value="SecureHealth 987654">
+
+        <label for="emergency">Emergency Contact</label>
+        <input type="text" id="emergency" value="Jane Doe - 0412 876 543">
+      </form>
+
+      <div class="next-button">
+        <a href="https://portal.measurement.gov.au">
+          <button type="button">Next</button>
+        </a>
+      </div>
+    </div>
+  </body>
+</html>

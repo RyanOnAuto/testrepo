@@ -42,7 +42,8 @@
         console.table(redactedData);
 
         // Send safe data to GA
-        ggtag('event', 'page_view', redactedData);
+        //gtag('event', 'page_view', redactedData);
+        gtag('event', 'page_view', {redactedData, page_title: 'Title_TC2', });
       });
     </script>
   
